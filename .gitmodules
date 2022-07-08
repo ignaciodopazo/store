@@ -1,3 +1,6 @@
 [submodule "vendure"]
 	path = vendure
 	url = git@github.com:andresemanueldopazo/vendure.git
+[submodule "commerce"]
+	path = commerce
+	url = git@github.com:andresemanueldopazo/commerce.git
