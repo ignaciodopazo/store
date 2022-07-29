@@ -1,0 +1,27 @@
+#!/bin/sh
+
+# 1. Create a file named `store.env.sh` i.e this one without `.template` suffix
+# 2. Copy contents of this file to the new one
+# 3. Declare STORE_ROOT as the path of this repository in your local machine
+
+# Then, for develop run this script with the following command
+# . store-env
+# or with
+# source store-env
+
+# path to this repo in your local machine
+export STORE_ROOT="/home/.../path/to/this/repo"
+
+function store-env () {
+    gnome-terminal --tab -t "commerce" --working-directory="${STORE_ROOT}/commerce" -e "yarn dev"
+    gnome-terminal --tab -t "vendure" --working-directory="${STORE_ROOT}/vendure" -e "yarn start"
+    gnome-terminal --tab -t "htop" -e "htop"
+    function f() {
+        cd ${STORE_ROOT} &&
+        git fetch --recurse-submodules &&
+        git status &&
+        code .
+    }
+    f
+}
+store-env
