@@ -1,1 +1,3 @@
 store-env.sh
+node_modules
+.env

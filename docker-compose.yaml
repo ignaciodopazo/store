@@ -1,0 +1,42 @@
+version: "3.9"
+
+networks:
+  store-net:
+    ipam:
+      config:
+        - subnet: 172.20.0.0/24
+
+services:
+  vendure-backend:
+    container_name:
+      vendure-backend
+    build:
+      context: ./vendure
+    env_file:
+      - ./vendure/.env
+    networks:
+      store-net:
+        ipv4_address: 172.20.0.2
+    ports:
+      - 3001:3001
+  vendure-storefront:
+    container_name:
+      vendure-storefront
+    build:
+      context: ./vendure-storefront
+    env_file:
+      - ./vendure-storefront/site/.env.local
+    networks:
+      store-net:
+        ipv4_address: 172.20.0.3
+    command: [
+      "/bin/sh", "-c",
+      "./wait-for.sh http://172.20.0.2:3001/health --
+           yarn build
+        && cd /app/site
+        && yarn start"
+    ]
+    ports:
+      - 3000:3000
+    depends_on:
+      - vendure-backend
