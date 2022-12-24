@@ -32,10 +32,15 @@ services:
     command: [
       "/bin/sh", "-c",
       "./wait-for.sh http://172.20.0.2:3001/health --
-           yarn build
+           yarn --max_old_space_size=720 build
         && cd /app/site
         && yarn start"
     ]
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 750M
     ports:
       - 3000:3000
     depends_on:
